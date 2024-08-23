@@ -27,6 +27,29 @@ class Spike {
     this.type = type;
   }
 
+  detectCollision = (
+    objX: number,
+    objY: number,
+    objWidth: number,
+    objHeight: number
+  ) => {
+    if (this.type === "normal") {
+      return (
+        objX < this.x + this.width &&
+        objX + objWidth > this.x &&
+        objY < this.y + this.height &&
+        objY + objHeight > this.y
+      );
+    }
+
+    return (
+      objX < this.x + this.width &&
+      objX + objWidth > this.x &&
+      objY < this.y + this.height &&
+      objY + objHeight > this.y
+    );
+  };
+
   draw = () => {
     const ctx = this.game.home.ctx;
 

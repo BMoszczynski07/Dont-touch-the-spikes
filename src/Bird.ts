@@ -125,9 +125,15 @@ class Bird {
     this.dy = -30;
   };
 
+  fall = () => {
+    this.fly();
+  };
+
   fly = () => {
-    if (this.dx > 0) this.dx += 0.005;
-    else this.dx -= 0.005;
+    if (this.game.home.isGameStarted === true) {
+      if (this.dx > 0) this.dx += 0.005;
+      else this.dx -= 0.005;
+    }
 
     this.dy += 2;
     this.x += this.dx;

@@ -34,16 +34,38 @@ class Game {
       this.home.canvas.height
     );
 
+    let detectCollision = false;
+
     for (const spike of this.spikes) {
       spike.update();
+
+      if (this.bird)
+        detectCollision = spike.detectCollision(
+          this.bird.x,
+          this.bird.y,
+          this.bird.width,
+          this.bird.height
+        );
+
+      if (detectCollision) {
+        // game over
+
+        this.bird.dx = 0;
+
+        this.home.isGameStarted = false;
+
+        this.bird?.flipHorizontally();
+      }
     }
 
     this.leftWall?.update();
 
-    if (this.home.isGameStarted) {
+    if (this.home.isGameStarted === true) {
       this.bird?.fly();
-    } else {
+    } else if (this.home.isGameStarted === null) {
       this.bird?.update();
+    } else if (this.home.isGameStarted === false) {
+      this.bird?.fall();
     }
 
     this.rightWall?.update();
