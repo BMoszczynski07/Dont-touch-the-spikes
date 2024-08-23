@@ -3,6 +3,8 @@ import Home from "./Home";
 import Spike from "./Spike";
 import Wall from "./Wall";
 
+import "./scss/game.scss";
+
 class Game {
   home: Home;
   bird: Bird | null = null;
@@ -23,14 +25,6 @@ class Game {
     requestAnimationFrame(this.animate);
 
     this.home.ctx.clearRect(
-      0,
-      0,
-      this.home.canvas.width,
-      this.home.canvas.height
-    );
-
-    this.home.ctx.fillStyle = "#fad4d4";
-    this.home.ctx.fillRect(
       0,
       0,
       this.home.canvas.width,

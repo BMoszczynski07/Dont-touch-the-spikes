@@ -54,12 +54,17 @@ body {
   }
 
   &__canvas-container {
+    width: 280px;
+    height: 400px;
     position: relative;
+    background: #fad4d4;
   }
 
   &__canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 280px;
     height: 400px;
-    border: 1px solid #000;
   }
 }
