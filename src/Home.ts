@@ -5,6 +5,7 @@ import MainPage from "./MainPage";
 class Home {
   isMuted: boolean = false;
   isGameStarted: boolean = false;
+  level = 1;
 
   mainPage: MainPage | null = null;
   game: Game | null = null;

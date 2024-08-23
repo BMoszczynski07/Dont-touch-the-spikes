@@ -4,4 +4,6 @@ import "./scss/style.scss";
 let home: Home;
 document.addEventListener("DOMContentLoaded", () => {
   home = new Home();
+
+  console.log(home);
 });

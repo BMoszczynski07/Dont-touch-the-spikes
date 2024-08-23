@@ -1,4 +1,7 @@
 import Game from "./Game";
+import Spike from "./Spike";
+import beep from "./audio/beep.mp3";
+import birdDefault from "./img/bird-default.png";
 
 class Bird {
   x: number;
@@ -9,7 +12,7 @@ class Bird {
   height: number;
   game: Game;
   img: HTMLImageElement = new Image();
-  flipped: boolean = false; // Flaga, czy obrazek jest odbity
+  flipped: boolean = false;
 
   constructor(
     x: number,
@@ -27,7 +30,7 @@ class Bird {
     this.game = game;
     this.width = width;
     this.height = height;
-    this.img.src = "./src/img/bird-default.png";
+    this.img.src = birdDefault;
   }
 
   draw = () => {
@@ -36,7 +39,6 @@ class Bird {
     ctx.save(); // Zapisz aktualny stan kontekstu
 
     if (this.flipped) {
-      console.log("flipping");
       ctx.translate(this.x + this.width / 2, this.y + this.height / 2); // Przenieś środek kontekstu na środek obrazka
       ctx.scale(-1, 1); // Odbij obrazek w poziomie
       ctx.translate(-(this.x + this.width / 2), -(this.y + this.height / 2)); // Przesuń kontekst z powrotem
@@ -48,10 +50,75 @@ class Bird {
   };
 
   flipHorizontally = () => {
-    console.log("this.flipHorizontally");
+    if (!this.game.home.isMuted) {
+      const beepAudio = new Audio();
+      beepAudio.src = beep;
+      beepAudio.volume = 0.15;
+
+      beepAudio.play();
+    }
 
     this.dx = -this.dx;
     this.flipped = !this.flipped; // Zmień stan flagi odbicia
+
+    this.game.spikes = [];
+
+    let spike;
+
+    for (let i = 0; i < 10; i++) {
+      const isSpikeAppearing =
+        Math.random() < this.game.spikeAppearingBaseChance;
+
+      this.game.spikeAppearingBaseChance += 0.001;
+
+      if (isSpikeAppearing) {
+        if (this.flipped) {
+          spike = new Spike(0, 160 * i, this.game, 80, 160);
+        } else {
+          spike = new Spike(
+            this.game.home.canvas.width - 80,
+            160 * i,
+            this.game,
+            80,
+            160,
+            "flipped"
+          );
+        }
+
+        this.game.spikes.push(spike);
+      }
+    }
+
+    if (this.game.spikes.length === 0) {
+      console.log("length - 0");
+
+      const spikePossiblePositions = [];
+
+      for (let i = 0; i < 10; i++) {
+        spikePossiblePositions.push(160 * i);
+      }
+
+      const randomSpikePositionIndex = Math.floor(
+        Math.random() * (spikePossiblePositions.length - 1)
+      );
+
+      const randomSpikePosition =
+        spikePossiblePositions[randomSpikePositionIndex];
+
+      if (this.flipped) {
+        spike = new Spike(0, randomSpikePosition, this.game, 80, 160);
+      } else {
+        spike = new Spike(
+          this.game.home.canvas.width - 80,
+          randomSpikePosition,
+          this.game,
+          80,
+          160,
+          "flipped"
+        );
+      }
+      this.game.spikes.push(spike);
+    }
   };
 
   jump = () => {
@@ -59,6 +126,9 @@ class Bird {
   };
 
   fly = () => {
+    if (this.dx > 0) this.dx += 0.005;
+    else this.dx -= 0.005;
+
     this.dy += 2;
     this.x += this.dx;
     if (

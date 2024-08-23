@@ -8,7 +8,8 @@ import "./scss/game.scss";
 class Game {
   home: Home;
   bird: Bird | null = null;
-  spike: Spike | null = null;
+  spikes: Spike[] = [];
+  spikeAppearingBaseChance = 0.05;
 
   leftWall: Wall | null = null;
   rightWall: Wall | null = null;
@@ -33,6 +34,10 @@ class Game {
       this.home.canvas.height
     );
 
+    for (const spike of this.spikes) {
+      spike.update();
+    }
+
     this.leftWall?.update();
 
     if (this.home.isGameStarted) {
@@ -54,14 +59,10 @@ class Game {
     );
 
     if (leftCollision) {
-      console.log("leftcollision");
-
       if (this.bird) {
         this.bird.flipHorizontally();
       }
     } else if (rightCollision) {
-      console.log("rightcollision");
-
       if (this.bird) {
         this.bird.flipHorizontally();
       }
@@ -78,6 +79,17 @@ class Game {
     });
 
     this.home = home;
+
+    const main = document.querySelector(".main") as HTMLDivElement;
+
+    main.addEventListener("click", () => {
+      this.home.isGameStarted = true;
+      this.bird?.jump();
+
+      this.home.canvas.addEventListener("click", () => {
+        this.bird?.jump();
+      });
+    });
 
     this.birdParameters = {
       x: this.home.canvas.width / 3,

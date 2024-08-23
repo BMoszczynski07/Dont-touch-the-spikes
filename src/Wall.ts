@@ -5,6 +5,7 @@ class Wall {
   y: number;
   type: "left" | "right";
   game: Game;
+  wallWidth: number = 30;
 
   constructor(x: number, y: number, type: "left" | "right", game: Game) {
     this.x = x;
@@ -16,7 +17,7 @@ class Wall {
   detectCollision = (objX: number, width: number): boolean => {
     switch (this.type) {
       case "left":
-        return objX <= this.x + 30;
+        return objX <= this.x + this.wallWidth;
       case "right":
         return objX + width >= this.x;
     }
@@ -27,7 +28,7 @@ class Wall {
     const ctx = this.game.home.ctx;
 
     ctx.fillStyle = "#454545";
-    ctx.fillRect(this.x, this.y, 30, canvas.height);
+    ctx.fillRect(this.x, this.y, this.wallWidth, canvas.height);
   };
 
   update = () => {
