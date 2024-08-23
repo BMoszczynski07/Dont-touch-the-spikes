@@ -1,5 +1,54 @@
+@import "./variables";
+
 body {
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: url("../img/site-background.webp");
+}
+
+*::selection {
+  background: #000;
+  color: #fff;
+}
+
+.site {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  height: 500px;
+  background: #3b3b3bbc;
+  border-radius: 30px;
+
+  &__header {
+    width: calc(100% - 48px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 24px;
+    color: #c7c7c7;
+
+    &-text {
+      font-size: 19px;
+      font-family: $i;
+      letter-spacing: -0.35px;
+      font-weight: 500;
+    }
+  }
+
+  &__mute {
+    cursor: pointer;
+  }
+
+  &__canvas {
+    width: 280px;
+    height: 400px;
+    border: 1px solid #000;
+  }
 }
