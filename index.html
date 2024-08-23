@@ -2,19 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./src/img/bird-default.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>Dont't touch the spikes</title>
   </head>
   <body>
     <main>
       <div class="site">
         <div class="site__header">
           <header class="site__header-text">Don't touch the spikes</header>
-          <i class="fa-solid fa-volume-high site__mute"></i>
+          <button class="site__mute-btn">
+            <i class="fa-solid fa-volume-high site__mute"></i>
+          </button>
         </div>
 
         <div class="site__canvas-container">
+          <div class="main">
+            <h5 class="main__high-score">High score: 0</h5>
+
+            <h5 class="main__start">Click or press space to begin</h5>
+          </div>
+
           <canvas class="site__canvas"></canvas>
         </div>
       </div>

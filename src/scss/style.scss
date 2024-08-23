@@ -44,6 +44,17 @@ body {
 
   &__mute {
     cursor: pointer;
+
+    &-btn {
+      color: #c7c7c7;
+      font-size: 17px;
+      background: transparent;
+      border: none;
+    }
+  }
+
+  &__canvas-container {
+    position: relative;
   }
 
   &__canvas {
