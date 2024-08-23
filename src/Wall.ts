@@ -3,13 +3,24 @@ import Game from "./Game";
 class Wall {
   x: number;
   y: number;
+  type: "left" | "right";
   game: Game;
 
-  constructor(x: number, y: number, game: Game) {
+  constructor(x: number, y: number, type: "left" | "right", game: Game) {
     this.x = x;
     this.y = y;
+    this.type = type;
     this.game = game;
   }
+
+  detectCollision = (objX: number, width: number): boolean => {
+    switch (this.type) {
+      case "left":
+        return objX <= this.x + 30;
+      case "right":
+        return objX + width >= this.x;
+    }
+  };
 
   draw = () => {
     const canvas = this.game.home.canvas;

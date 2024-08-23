@@ -16,6 +16,8 @@ class Game {
   birdParameters: {
     x: number;
     y: number;
+    dx: number;
+    dy: number;
     width: number;
     height: number;
     game: Game;
@@ -33,33 +35,73 @@ class Game {
 
     this.leftWall?.update();
 
-    this.bird?.update();
+    if (this.home.isGameStarted) {
+      this.bird?.fly();
+    } else {
+      this.bird?.update();
+    }
 
     this.rightWall?.update();
+
+    const leftCollision: boolean | undefined = this.leftWall?.detectCollision(
+      this.bird?.x ?? 0,
+      this.birdParameters.width
+    );
+
+    const rightCollision: boolean | undefined = this.rightWall?.detectCollision(
+      this.bird?.x ?? 0,
+      this.birdParameters.width
+    );
+
+    if (leftCollision) {
+      console.log("leftcollision");
+
+      if (this.bird) {
+        this.bird.flipHorizontally();
+      }
+    } else if (rightCollision) {
+      console.log("rightcollision");
+
+      if (this.bird) {
+        this.bird.flipHorizontally();
+      }
+    }
   };
 
   constructor(home: Home) {
+    document.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key !== " ") return;
+
+      this.home.isGameStarted = true;
+
+      this.bird?.jump();
+    });
+
     this.home = home;
 
     this.birdParameters = {
       x: this.home.canvas.width / 3,
       y: this.home.canvas.height / 2,
+      dx: 15,
+      dy: 0,
       width: 615 / 4,
       height: 418 / 4,
       game: this,
     };
 
-    this.leftWall = new Wall(0, 0, this);
+    this.leftWall = new Wall(0, 0, "left", this);
 
     this.bird = new Bird(
       this.birdParameters.x,
       this.birdParameters.y,
+      this.birdParameters.dx,
+      this.birdParameters.dy,
       this.birdParameters.width,
       this.birdParameters.height,
       this.birdParameters.game
     );
 
-    this.rightWall = new Wall(this.home.canvas.width - 30, 0, this);
+    this.rightWall = new Wall(this.home.canvas.width - 30, 0, "right", this);
 
     this.animate();
   }

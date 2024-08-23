@@ -4,6 +4,7 @@ import MainPage from "./MainPage";
 
 class Home {
   isMuted: boolean = false;
+  isGameStarted: boolean = false;
 
   mainPage: MainPage | null = null;
   game: Game | null = null;
