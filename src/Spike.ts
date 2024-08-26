@@ -33,20 +33,11 @@ class Spike {
     objWidth: number,
     objHeight: number
   ) => {
-    if (this.type === "normal") {
-      return (
-        objX < this.x + this.width &&
-        objX + objWidth > this.x &&
-        objY < this.y + this.height &&
-        objY + objHeight > this.y
-      );
-    }
-
     return (
       objX < this.x + this.width &&
       objX + objWidth > this.x &&
-      objY < this.y + this.height &&
-      objY + objHeight > this.y
+      objY < this.y + this.height - 60 &&
+      objY + objHeight > this.y + 60
     );
   };
 

@@ -11,7 +11,7 @@ class Game {
   home: Home;
   bird: Bird | null = null;
   spikes: Spike[] = [];
-  spikeAppearingBaseChance = 0.05;
+  spikeAppearingBaseChance = 0.75;
 
   leftWall: Wall | null = null;
   rightWall: Wall | null = null;
