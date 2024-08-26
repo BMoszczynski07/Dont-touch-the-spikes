@@ -2,6 +2,8 @@ import Bird from "./Bird";
 import Home from "./Home";
 import Spike from "./Spike";
 import Wall from "./Wall";
+import birdDefault from "./img/bird-default.png";
+import birdDead from "./img/bird-dead.png";
 
 import "./scss/game.scss";
 
@@ -22,6 +24,7 @@ class Game {
     width: number;
     height: number;
     game: Game;
+    imgSrc: string;
   };
 
   animate = () => {
@@ -39,22 +42,39 @@ class Game {
     for (const spike of this.spikes) {
       spike.update();
 
-      if (this.bird)
-        detectCollision = spike.detectCollision(
-          this.bird.x,
-          this.bird.y,
-          this.bird.width,
-          this.bird.height
-        );
+      if (this.home.isGameStarted === true) {
+        if (this.bird)
+          detectCollision = spike.detectCollision(
+            this.bird.x,
+            this.bird.y,
+            this.bird.width,
+            this.bird.height
+          );
 
-      if (detectCollision) {
-        // game over
+        if (detectCollision) {
+          // game over
 
-        this.bird.dx = 0;
+          this.home.isGameStarted = false;
 
-        this.home.isGameStarted = false;
+          this.birdParameters.imgSrc = birdDead;
 
-        this.bird?.flipHorizontally();
+          if (this.bird) {
+            this.bird = new Bird(
+              this.bird.x,
+              this.bird.y,
+              this.bird.dx,
+              this.bird.dy,
+              this.bird.width,
+              this.bird.height,
+              this.bird.game,
+              this.birdParameters.imgSrc
+            );
+
+            this.bird.dx = 0;
+          }
+
+          this.bird?.flipHorizontally();
+        }
       }
     }
 
@@ -70,30 +90,33 @@ class Game {
 
     this.rightWall?.update();
 
-    const leftCollision: boolean | undefined = this.leftWall?.detectCollision(
-      this.bird?.x ?? 0,
-      this.birdParameters.width
-    );
+    if (this.home.isGameStarted === true) {
+      const leftCollision: boolean | undefined = this.leftWall?.detectCollision(
+        this.bird?.x ?? 0,
+        this.birdParameters.width
+      );
 
-    const rightCollision: boolean | undefined = this.rightWall?.detectCollision(
-      this.bird?.x ?? 0,
-      this.birdParameters.width
-    );
+      const rightCollision: boolean | undefined =
+        this.rightWall?.detectCollision(
+          this.bird?.x ?? 0,
+          this.birdParameters.width
+        );
 
-    if (leftCollision) {
-      if (this.bird) {
-        this.bird.flipHorizontally();
-      }
-    } else if (rightCollision) {
-      if (this.bird) {
-        this.bird.flipHorizontally();
+      if (leftCollision) {
+        if (this.bird) {
+          this.bird.flipHorizontally();
+        }
+      } else if (rightCollision) {
+        if (this.bird) {
+          this.bird.flipHorizontally();
+        }
       }
     }
   };
 
   constructor(home: Home) {
     document.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key !== " ") return;
+      if (e.key !== " " || this.home.isGameStarted === false) return;
 
       this.home.isGameStarted = true;
 
@@ -105,6 +128,8 @@ class Game {
     const main = document.querySelector(".main") as HTMLDivElement;
 
     main.addEventListener("click", () => {
+      if (this.home.isGameStarted === false) return;
+
       this.home.isGameStarted = true;
       this.bird?.jump();
 
@@ -121,6 +146,7 @@ class Game {
       width: 615 / 4,
       height: 418 / 4,
       game: this,
+      imgSrc: birdDefault,
     };
 
     this.leftWall = new Wall(0, 0, "left", this);
@@ -132,7 +158,8 @@ class Game {
       this.birdParameters.dy,
       this.birdParameters.width,
       this.birdParameters.height,
-      this.birdParameters.game
+      this.birdParameters.game,
+      this.birdParameters.imgSrc
     );
 
     this.rightWall = new Wall(this.home.canvas.width - 30, 0, "right", this);

@@ -1,7 +1,7 @@
 import Game from "./Game";
 import Spike from "./Spike";
 import beep from "./audio/beep.mp3";
-import birdDefault from "./img/bird-default.png";
+import lose from "./audio/lose.wav";
 
 class Bird {
   x: number;
@@ -21,7 +21,8 @@ class Bird {
     dy: number,
     width: number,
     height: number,
-    game: Game
+    game: Game,
+    imgSrc: string
   ) {
     this.x = x;
     this.y = y;
@@ -30,7 +31,7 @@ class Bird {
     this.game = game;
     this.width = width;
     this.height = height;
-    this.img.src = birdDefault;
+    this.img.src = imgSrc;
   }
 
   draw = () => {
@@ -51,6 +52,16 @@ class Bird {
 
   flipHorizontally = () => {
     if (!this.game.home.isMuted) {
+      if (this.game.home.isGameStarted === false) {
+        const loseAudio = new Audio();
+        loseAudio.src = lose;
+
+        loseAudio.play();
+        return;
+      }
+
+      console.log("flip horizontally");
+
       const beepAudio = new Audio();
       beepAudio.src = beep;
       beepAudio.volume = 0.15;

@@ -22,7 +22,7 @@ class MainPage {
         }
       });
 
-      btn.addEventListener("click", () => {
+      btn.addEventListener("touchdown", () => {
         if (!this.home.isMuted) {
           const clickAudio = new Audio();
           clickAudio.src = click;
