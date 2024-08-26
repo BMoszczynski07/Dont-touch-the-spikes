@@ -69,6 +69,21 @@ class Bird {
       beepAudio.play();
     }
 
+    this.game.home.level++;
+
+    const levelElement = document.querySelector(".game__score") as HTMLElement;
+    levelElement.textContent = `${
+      this.game.home.level >= 10
+        ? this.game.home.level
+        : `0${this.game.home.level}`
+    }`;
+
+    levelElement.style.fontSize = `${
+      this.game.home.level.toString().length > 2
+        ? 42 / this.game.home.level.toString().length + 20
+        : 42
+    }px`;
+
     this.dx = -this.dx;
     this.flipped = !this.flipped; // Zmień stan flagi odbicia
 
