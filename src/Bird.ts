@@ -1,4 +1,5 @@
 import Game from "./Game";
+import Random from "./Random";
 import Spike from "./Spike";
 import beep from "./audio/beep.mp3";
 
@@ -59,6 +60,27 @@ class Bird {
     }
 
     this.game.level++;
+
+    if (this.game.level % 10 === 0) {
+      const themes = ["--blue", "--green", "--cyan", "--purple", "--orange"];
+
+      const rand = Math.floor(new Random().getInt(0, themes.length));
+
+      const chosenTheme = themes[rand];
+
+      console.log(chosenTheme);
+
+      const canvasContainer = document.querySelector(
+        ".site__canvas-container"
+      ) as HTMLElement;
+
+      canvasContainer.classList.forEach((className) => {
+        if (className !== "site__canvas-container")
+          canvasContainer.classList.remove(className);
+      });
+
+      canvasContainer.classList.add(`site__canvas-container${chosenTheme}`);
+    }
 
     const levelElement = document.querySelector(".game__score") as HTMLElement;
     levelElement.textContent = `${

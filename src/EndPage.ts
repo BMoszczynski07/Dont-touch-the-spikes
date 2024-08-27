@@ -51,6 +51,7 @@ class EndPage {
         }
 
         this.home.game.level = 0;
+        this.home.game.spikeAppearingBaseChance = 0.05;
 
         levelElement.textContent = `${
           this.home.game.level >= 10
@@ -82,6 +83,15 @@ class EndPage {
 
         this.home.game.spikes = [];
       }
+
+      const canvasContainer = document.querySelector(
+        ".site__canvas-container"
+      ) as HTMLElement;
+
+      canvasContainer.classList.forEach((className) => {
+        if (className !== "site__canvas-container")
+          canvasContainer.classList.remove(className);
+      });
 
       this.home.mainPage = new MainPage(this.home);
     }, 600);

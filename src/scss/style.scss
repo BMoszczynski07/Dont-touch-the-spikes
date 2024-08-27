@@ -63,6 +63,67 @@ body {
     height: 400px;
     position: relative;
     background: #fad4d4;
+    transition: 0.3s;
+
+    &--blue {
+      transition: 1s;
+      background: #9ea5ff;
+
+      & .game__score {
+        transition: 1s;
+
+        background: rgb(198, 202, 255);
+        color: #7b73d3;
+      }
+    }
+
+    &--green {
+      transition: 1s;
+      background: #c4e6a7;
+
+      & .game__score {
+        transition: 1s;
+
+        background: rgb(169, 206, 136);
+        color: #609450;
+      }
+    }
+
+    &--cyan {
+      transition: 1s;
+      background: #99e0f1;
+
+      & .game__score {
+        transition: 1s;
+
+        background: rgb(128, 197, 214);
+        color: #386095;
+      }
+    }
+
+    &--purple {
+      transition: 1s;
+      background: #c9a7f1;
+
+      & .game__score {
+        transition: 1s;
+
+        background: rgb(182, 149, 220);
+        color: #9656c9;
+      }
+    }
+
+    &--orange {
+      transition: 1s;
+      background: #ffcc80;
+
+      & .game__score {
+        transition: 1s;
+
+        background: rgb(235, 184, 109);
+        color: #d35400;
+      }
+    }
   }
 
   &__canvas {

@@ -62,6 +62,11 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
+  &__start {
+    width: 250px;
+    text-align: center;
+  }
+
   &--visible > &__best-score {
     animation: subtext-in-from-top 0.5s ease-in-out forwards;
   }
