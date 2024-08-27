@@ -62,7 +62,7 @@ class EndPage {
         const birdParameters = {
           x: this.home.canvas.width / 3,
           y: this.home.canvas.height / 2,
-          dx: 15,
+          dx: 14,
           dy: 0,
           width: 615 / 4,
           height: 418 / 4,

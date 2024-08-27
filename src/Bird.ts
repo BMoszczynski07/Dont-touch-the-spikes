@@ -102,13 +102,13 @@ class Bird {
 
     let spikesQty = 0;
 
-    for (let i = 0; i < 10; i++) {
-      if (spikesQty === 9) {
+    for (let i = 0; i < 9; i++) {
+      if (spikesQty === 8) {
         this.game.spikes = [];
 
         let randNoSpikePosition = Math.floor(new Random().getInt(0, 9));
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 9; i++) {
           if (i === randNoSpikePosition) continue;
 
           if (this.flipped) {
@@ -196,8 +196,8 @@ class Bird {
 
   fly = () => {
     if (this.game.home.isGameStarted === true) {
-      if (this.dx > 0) this.dx += 0.002;
-      else this.dx -= 0.002;
+      if (this.dx > 0 && this.dx < 30) this.dx += 0.002;
+      else if (this.dx < 0 && this.dx > -30) this.dx -= 0.002;
     }
 
     this.dy += 2;
@@ -211,6 +211,7 @@ class Bird {
       this.y = 0;
     } else if (this.y + this.dy > this.game.home.canvas.height - this.height) {
       // game over
+      if (this.game.home.isGameStarted === true) this.game.gameover();
       this.y = this.game.home.canvas.height - this.height;
     }
 

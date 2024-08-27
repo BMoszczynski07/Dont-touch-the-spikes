@@ -30,6 +30,44 @@ class Game {
     imgSrc: string;
   };
 
+  gameover = () => {
+    navigator.vibrate([500]);
+
+    setTimeout(() => {
+      this.home.endPage = new EndPage(this.home);
+    }, 1000);
+
+    if (!this.home.isMuted) {
+      const loseAudio = new Audio();
+      loseAudio.src = lose;
+      loseAudio.volume = 0.3;
+
+      loseAudio.play();
+    }
+
+    this.home.isGameStarted = false;
+
+    this.birdParameters.imgSrc = birdDead;
+
+    if (this.bird) {
+      const wasFlipped = this.bird.flipped; // Zachowaj stan odwrócenia
+
+      this.bird = new Bird(
+        this.bird.x,
+        this.bird.y,
+        this.bird.dx,
+        this.bird.dy,
+        this.bird.width,
+        this.bird.height,
+        this.bird.game,
+        this.birdParameters.imgSrc
+      );
+
+      this.bird.flipped = wasFlipped; // Przywróć stan odwrócenia
+      this.bird.dx = 0;
+    }
+  };
+
   animate = () => {
     requestAnimationFrame(this.animate);
 
@@ -55,42 +93,7 @@ class Game {
           );
 
         if (detectCollision) {
-          // game over
-          navigator.vibrate([500]);
-
-          setTimeout(() => {
-            this.home.endPage = new EndPage(this.home);
-          }, 1000);
-
-          if (!this.home.isMuted) {
-            const loseAudio = new Audio();
-            loseAudio.src = lose;
-            loseAudio.volume = 0.3;
-
-            loseAudio.play();
-          }
-
-          this.home.isGameStarted = false;
-
-          this.birdParameters.imgSrc = birdDead;
-
-          if (this.bird) {
-            const wasFlipped = this.bird.flipped; // Zachowaj stan odwrócenia
-
-            this.bird = new Bird(
-              this.bird.x,
-              this.bird.y,
-              this.bird.dx,
-              this.bird.dy,
-              this.bird.width,
-              this.bird.height,
-              this.bird.game,
-              this.birdParameters.imgSrc
-            );
-
-            this.bird.flipped = wasFlipped; // Przywróć stan odwrócenia
-            this.bird.dx = 0;
-          }
+          this.gameover();
         }
       }
     }
@@ -160,7 +163,7 @@ class Game {
     this.birdParameters = {
       x: this.home.canvas.width / 3,
       y: this.home.canvas.height / 2,
-      dx: 12,
+      dx: 14,
       dy: 0,
       width: 615 / 4,
       height: 418 / 4,
