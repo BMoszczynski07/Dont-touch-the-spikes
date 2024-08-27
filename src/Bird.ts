@@ -100,7 +100,35 @@ class Bird {
 
     let spike;
 
+    let spikesQty = 0;
+
     for (let i = 0; i < 10; i++) {
+      if (spikesQty === 9) {
+        this.game.spikes = [];
+
+        let randNoSpikePosition = Math.floor(new Random().getInt(0, 9));
+
+        for (let i = 0; i < 10; i++) {
+          if (i === randNoSpikePosition) continue;
+
+          if (this.flipped) {
+            spike = new Spike(0, 160 * i, this.game, 80, 160);
+          } else {
+            spikesQty++;
+            spike = new Spike(
+              this.game.home.canvas.width - 80,
+              160 * i,
+              this.game,
+              80,
+              160,
+              "flipped"
+            );
+          }
+
+          this.game.spikes.push(spike);
+        }
+      }
+
       const isSpikeAppearing =
         Math.random() < this.game.spikeAppearingBaseChance;
 
@@ -108,8 +136,10 @@ class Bird {
 
       if (isSpikeAppearing) {
         if (this.flipped) {
+          spikesQty++;
           spike = new Spike(0, 160 * i, this.game, 80, 160);
         } else {
+          spikesQty++;
           spike = new Spike(
             this.game.home.canvas.width - 80,
             160 * i,

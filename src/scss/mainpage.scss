@@ -61,6 +61,7 @@
   font-weight: 400;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
 
   &__start {
     width: 250px;
