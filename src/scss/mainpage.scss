@@ -62,7 +62,7 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
-  &--visible > &__high-score {
+  &--visible > &__best-score {
     animation: subtext-in-from-top 0.5s ease-in-out forwards;
   }
 
@@ -70,7 +70,7 @@
     animation: subtext-in-from-bottom 0.5s ease-in-out forwards;
   }
 
-  &--invisible > &__high-score {
+  &--invisible > &__best-score {
     animation: subtext-out-from-top 0.5s ease-in-out forwards;
   }
 

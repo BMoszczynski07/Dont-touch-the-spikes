@@ -144,6 +144,19 @@ class Game {
 
     const main = document.querySelector(".main") as HTMLDivElement;
 
+    main.addEventListener("click", () => {
+      if (this.home.isGameStarted === false) return;
+
+      if (this.home.isGameStarted === null) this.home.mainPage?.disappear();
+
+      this.home.isGameStarted = true;
+      this.bird?.jump();
+
+      this.home.canvas.addEventListener("click", () => {
+        this.bird?.jump();
+      });
+    });
+
     main.addEventListener("touchstart", () => {
       if (this.home.isGameStarted === false) return;
 

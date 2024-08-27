@@ -1,9 +1,6 @@
 import Home from "./Home";
 import "./scss/mainpage.scss";
 
-import hover from "./audio/hover.wav";
-import click from "./audio/click.wav";
-
 class MainPage {
   home: Home;
 
@@ -14,34 +11,26 @@ class MainPage {
   };
 
   constructor(home: Home) {
+    this.home = home;
+
     // main page appears
     const mainPage = document.querySelector(".main") as HTMLDivElement;
 
     mainPage.classList.remove("main--invisible");
     mainPage.classList.add("main--visible");
 
-    this.home = home;
+    const bestScore = document.querySelector(
+      ".main__best-score"
+    ) as HTMLElement;
 
-    const btns = document.querySelectorAll("button");
+    if (localStorage.getItem("best-score")) {
+      const best = localStorage.getItem("best-score") as string;
 
-    for (const btn of btns) {
-      btn.addEventListener("mouseenter", () => {
-        if (!this.home.isMuted) {
-          const hoverAudio = new Audio();
-          hoverAudio.src = hover;
-
-          hoverAudio.play();
-        }
-      });
-
-      btn.addEventListener("touchdown", () => {
-        if (!this.home.isMuted) {
-          const clickAudio = new Audio();
-          clickAudio.src = click;
-
-          clickAudio.play();
-        }
-      });
+      bestScore.textContent = `Best score: ${
+        parseInt(best) < 10 ? 0 + best : best
+      }`;
+    } else {
+      bestScore.textContent = "Best score: 00";
     }
 
     const muteBtn = document.querySelector(
