@@ -32,31 +32,6 @@ class MainPage {
     } else {
       bestScore.textContent = "Best score: 00";
     }
-
-    const muteBtn = document.querySelector(
-      ".site__mute-btn"
-    ) as HTMLButtonElement;
-    const mute = document.querySelector(".site__mute") as HTMLElement;
-
-    muteBtn.addEventListener("keydown", (event: KeyboardEvent) => {
-      if (event.code === "Space") {
-        event.preventDefault(); // Zapobiega domyślnemu kliknięciu przyciskiem
-      }
-    });
-
-    muteBtn.addEventListener("click", () => {
-      this.home.isMuted = !this.home.isMuted;
-
-      if (this.home.isMuted) {
-        mute.classList.remove("fa-volume-high");
-        mute.classList.add("fa-volume-mute");
-
-        return;
-      }
-
-      mute.classList.add("fa-volume-high");
-      mute.classList.remove("fa-volume-mute");
-    });
   }
 }
 

@@ -39,6 +39,31 @@ class Home {
       });
     }
 
+    const muteBtn = document.querySelector(
+      ".site__mute-btn"
+    ) as HTMLButtonElement;
+    const mute = document.querySelector(".site__mute") as HTMLElement;
+
+    muteBtn.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        event.preventDefault(); // Zapobiega domyślnemu kliknięciu przyciskiem
+      }
+    });
+
+    muteBtn.addEventListener("click", () => {
+      this.isMuted = !this.isMuted;
+
+      if (this.isMuted) {
+        mute.classList.remove("fa-volume-high");
+        mute.classList.add("fa-volume-mute");
+
+        return;
+      }
+
+      mute.classList.add("fa-volume-high");
+      mute.classList.remove("fa-volume-mute");
+    });
+
     this.canvas.width = 1020;
     this.canvas.height = 1600;
 
