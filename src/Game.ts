@@ -4,14 +4,17 @@ import Spike from "./Spike";
 import Wall from "./Wall";
 import birdDefault from "./img/bird-default.png";
 import birdDead from "./img/bird-dead.png";
+import lose from "./audio/lose.wav";
 
 import "./scss/game.scss";
+import EndPage from "./EndPage";
 
 class Game {
   home: Home;
   bird: Bird | null = null;
   spikes: Spike[] = [];
-  spikeAppearingBaseChance = 0.75;
+  spikeAppearingBaseChance = 0.05;
+  level = 0;
 
   leftWall: Wall | null = null;
   rightWall: Wall | null = null;
@@ -53,12 +56,27 @@ class Game {
 
         if (detectCollision) {
           // game over
+          navigator.vibrate([500]);
+
+          setTimeout(() => {
+            this.home.endPage = new EndPage(this.home);
+          }, 1000);
+
+          if (!this.home.isMuted) {
+            const loseAudio = new Audio();
+            loseAudio.src = lose;
+            loseAudio.volume = 0.3;
+
+            loseAudio.play();
+          }
 
           this.home.isGameStarted = false;
 
           this.birdParameters.imgSrc = birdDead;
 
           if (this.bird) {
+            const wasFlipped = this.bird.flipped; // Zachowaj stan odwrócenia
+
             this.bird = new Bird(
               this.bird.x,
               this.bird.y,
@@ -70,10 +88,9 @@ class Game {
               this.birdParameters.imgSrc
             );
 
+            this.bird.flipped = wasFlipped; // Przywróć stan odwrócenia
             this.bird.dx = 0;
           }
-
-          this.bird?.flipHorizontally();
         }
       }
     }
@@ -102,14 +119,10 @@ class Game {
           this.birdParameters.width
         );
 
-      if (leftCollision) {
-        if (this.bird) {
-          this.bird.flipHorizontally();
-        }
-      } else if (rightCollision) {
-        if (this.bird) {
-          this.bird.flipHorizontally();
-        }
+      if ((leftCollision || rightCollision) && this.bird) {
+        console.log("collision");
+
+        this.bird.flipHorizontally();
       }
     }
   };
@@ -117,6 +130,10 @@ class Game {
   constructor(home: Home) {
     document.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key !== " " || this.home.isGameStarted === false) return;
+
+      if (this.home.isGameStarted === null) this.home.mainPage?.disappear();
+
+      this.home.mainPage?.disappear();
 
       this.home.isGameStarted = true;
 
@@ -127,8 +144,10 @@ class Game {
 
     const main = document.querySelector(".main") as HTMLDivElement;
 
-    main.addEventListener("click", () => {
+    main.addEventListener("touchstart", () => {
       if (this.home.isGameStarted === false) return;
+
+      if (this.home.isGameStarted === null) this.home.mainPage?.disappear();
 
       this.home.isGameStarted = true;
       this.bird?.jump();

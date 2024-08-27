@@ -1,14 +1,18 @@
 @import "./variables";
 
 body {
-  margin: 0 !important;
-  padding: 0 !important;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
   background-image: url("../img/site-background.webp");
+}
+
+html,
+body {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 *::selection {
@@ -50,6 +54,7 @@ body {
       font-size: 17px;
       background: transparent;
       border: none;
+      outline: none;
     }
   }
 

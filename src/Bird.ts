@@ -1,7 +1,6 @@
 import Game from "./Game";
 import Spike from "./Spike";
 import beep from "./audio/beep.mp3";
-import lose from "./audio/lose.wav";
 
 class Bird {
   x: number;
@@ -52,16 +51,6 @@ class Bird {
 
   flipHorizontally = () => {
     if (!this.game.home.isMuted) {
-      if (this.game.home.isGameStarted === false) {
-        const loseAudio = new Audio();
-        loseAudio.src = lose;
-
-        loseAudio.play();
-        return;
-      }
-
-      console.log("flip horizontally");
-
       const beepAudio = new Audio();
       beepAudio.src = beep;
       beepAudio.volume = 0.15;
@@ -69,18 +58,16 @@ class Bird {
       beepAudio.play();
     }
 
-    this.game.home.level++;
+    this.game.level++;
 
     const levelElement = document.querySelector(".game__score") as HTMLElement;
     levelElement.textContent = `${
-      this.game.home.level >= 10
-        ? this.game.home.level
-        : `0${this.game.home.level}`
+      this.game.level >= 10 ? this.game.level : `0${this.game.level}`
     }`;
 
     levelElement.style.fontSize = `${
-      this.game.home.level.toString().length > 2
-        ? 42 / this.game.home.level.toString().length + 20
+      this.game.level.toString().length > 2
+        ? 42 / this.game.level.toString().length + 20
         : 42
     }px`;
 
@@ -157,8 +144,8 @@ class Bird {
 
   fly = () => {
     if (this.game.home.isGameStarted === true) {
-      if (this.dx > 0) this.dx += 0.005;
-      else this.dx -= 0.005;
+      if (this.dx > 0) this.dx += 0.002;
+      else this.dx -= 0.002;
     }
 
     this.dy += 2;

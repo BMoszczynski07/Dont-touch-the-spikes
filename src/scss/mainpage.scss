@@ -1,8 +1,52 @@
 @import "./variables";
 
+@keyframes subtext-in-from-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtext-in-from-bottom {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtext-out-from-top {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes subtext-out-from-bottom {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
 .main {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 0;
   left: 0;
   width: 100%;
@@ -16,4 +60,21 @@
   font-family: $w;
   font-weight: 400;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &--visible > &__high-score {
+    animation: subtext-in-from-top 0.5s ease-in-out forwards;
+  }
+
+  &--visible > &__start {
+    animation: subtext-in-from-bottom 0.5s ease-in-out forwards;
+  }
+
+  &--invisible > &__high-score {
+    animation: subtext-out-from-top 0.5s ease-in-out forwards;
+  }
+
+  &--invisible > &__start {
+    animation: subtext-out-from-bottom 0.5s ease-in-out forwards;
+  }
 }

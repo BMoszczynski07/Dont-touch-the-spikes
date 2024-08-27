@@ -7,7 +7,19 @@ import click from "./audio/click.wav";
 class MainPage {
   home: Home;
 
+  disappear = () => {
+    const mainPage = document.querySelector(".main") as HTMLDivElement;
+    mainPage.classList.remove("main--visible");
+    mainPage.classList.add("main--invisible");
+  };
+
   constructor(home: Home) {
+    // main page appears
+    const mainPage = document.querySelector(".main") as HTMLDivElement;
+
+    mainPage.classList.remove("main--invisible");
+    mainPage.classList.add("main--visible");
+
     this.home = home;
 
     const btns = document.querySelectorAll("button");
@@ -36,6 +48,12 @@ class MainPage {
       ".site__mute-btn"
     ) as HTMLButtonElement;
     const mute = document.querySelector(".site__mute") as HTMLElement;
+
+    muteBtn.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        event.preventDefault(); // Zapobiega domyślnemu kliknięciu przyciskiem
+      }
+    });
 
     muteBtn.addEventListener("click", () => {
       this.home.isMuted = !this.home.isMuted;
