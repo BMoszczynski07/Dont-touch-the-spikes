@@ -19,6 +19,9 @@ class Game {
   leftWall: Wall | null = null;
   rightWall: Wall | null = null;
 
+  FPS: number = 60;
+  interval: number = 1000 / this.FPS;
+
   birdParameters: {
     x: number;
     y: number;
@@ -69,8 +72,6 @@ class Game {
   };
 
   animate = () => {
-    requestAnimationFrame(this.animate);
-
     this.home.ctx.clearRect(
       0,
       0,
@@ -186,7 +187,7 @@ class Game {
 
     this.rightWall = new Wall(this.home.canvas.width - 30, 0, "right", this);
 
-    this.animate();
+    setInterval(this.animate, this.interval);
   }
 }
 
