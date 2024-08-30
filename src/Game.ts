@@ -19,8 +19,8 @@ class Game {
   leftWall: Wall | null = null;
   rightWall: Wall | null = null;
 
-  FPS: number = 60;
-  interval: number = 1000 / this.FPS;
+  lastFrameTime = 0; // Zmienna przechowująca czas ostatniego wywołania ramki
+  fpsInterval = 1000 / 60; // Docelowy czas między klatkami dla 60 FPS
 
   birdParameters: {
     x: number;
@@ -71,62 +71,71 @@ class Game {
     }
   };
 
-  animate = () => {
-    this.home.ctx.clearRect(
-      0,
-      0,
-      this.home.canvas.width,
-      this.home.canvas.height
-    );
+  animate = (currentTime: number) => {
+    requestAnimationFrame(this.animate);
 
-    let detectCollision = false;
+    const elapsed = currentTime - this.lastFrameTime;
 
-    for (const spike of this.spikes) {
-      spike.update();
+    if (elapsed > this.fpsInterval) {
+      this.lastFrameTime = currentTime - (elapsed % this.fpsInterval);
 
-      if (this.home.isGameStarted === true) {
-        if (this.bird)
-          detectCollision = spike.detectCollision(
-            this.bird.x,
-            this.bird.y,
-            this.bird.width,
-            this.bird.height
-          );
-
-        if (detectCollision) {
-          this.gameover();
-        }
-      }
-    }
-
-    this.leftWall?.update();
-
-    if (this.home.isGameStarted === true) {
-      this.bird?.fly();
-    } else if (this.home.isGameStarted === null) {
-      this.bird?.update();
-    } else if (this.home.isGameStarted === false) {
-      this.bird?.fall();
-    }
-
-    this.rightWall?.update();
-
-    if (this.home.isGameStarted === true) {
-      const leftCollision: boolean | undefined = this.leftWall?.detectCollision(
-        this.bird?.x ?? 0,
-        this.birdParameters.width
+      this.home.ctx.clearRect(
+        0,
+        0,
+        this.home.canvas.width,
+        this.home.canvas.height
       );
 
-      const rightCollision: boolean | undefined =
-        this.rightWall?.detectCollision(
-          this.bird?.x ?? 0,
-          this.birdParameters.width
-        );
+      let detectCollision = false;
 
-      if ((leftCollision || rightCollision) && this.bird) {
-        console.log("collision");
+      for (const spike of this.spikes) {
+        spike.update();
 
-        this.bird.flipHorizontally();
+        if (this.home.isGameStarted === true) {
+          if (this.bird)
+            detectCollision = spike.detectCollision(
+              this.bird.x,
+              this.bird.y,
+              this.bird.width,
+              this.bird.height
+            );
+
+          if (detectCollision) {
+            this.gameover();
+          }
+        }
+      }
+
+      this.leftWall?.update();
+
+      if (this.home.isGameStarted === true) {
+        this.bird?.fly();
+      } else if (this.home.isGameStarted === null) {
+        this.bird?.update();
+      } else if (this.home.isGameStarted === false) {
+        this.bird?.fall();
+      }
+
+      this.rightWall?.update();
+
+      if (this.home.isGameStarted === true) {
+        const leftCollision: boolean | undefined =
+          this.leftWall?.detectCollision(
+            this.bird?.x ?? 0,
+            this.birdParameters.width
+          );
+
+        const rightCollision: boolean | undefined =
+          this.rightWall?.detectCollision(
+            this.bird?.x ?? 0,
+            this.birdParameters.width
+          );
+
+        if ((leftCollision || rightCollision) && this.bird) {
+          console.log("collision");
+
+          this.bird.flipHorizontally();
+        }
       }
     }
   };
@@ -187,7 +196,7 @@ class Game {
 
     this.rightWall = new Wall(this.home.canvas.width - 30, 0, "right", this);
 
-    setInterval(this.animate, this.interval);
+    this.animate(0);
   }
 }
 
