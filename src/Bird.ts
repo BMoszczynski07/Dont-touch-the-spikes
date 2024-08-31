@@ -106,7 +106,7 @@ class Bird {
       if (spikesQty === 8) {
         this.game.spikes = [];
 
-        let randNoSpikePosition = Math.floor(new Random().getInt(0, 9));
+        let randNoSpikePosition = Math.floor(new Random().getInt(0, 7));
 
         for (let i = 0; i < 9; i++) {
           if (i === randNoSpikePosition) continue;
@@ -114,7 +114,6 @@ class Bird {
           if (this.flipped) {
             spike = new Spike(0, 160 * i, this.game, 80, 160);
           } else {
-            spikesQty++;
             spike = new Spike(
               this.game.home.canvas.width - 80,
               160 * i,
